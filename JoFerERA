@@ -1,0 +1,54 @@
+#Y'all it ain't readin my csv because I'm stupid and forgot to do...
+getwd()
+#and see what my damn directory was. I used an old outdated one from a cool polling session I was in.
+setwd("C:/Users/Jake Crouse/Documents/538Session")
+#Now I can get JoFer's data into R cleanly
+JoFer_Log_16 <- read.csv("JoFer_Log_16.csv")
+#Let's take a peek at the table we have
+View(JoFer_Log_16)
+#This csv file was small enough that I deleted out the month headers that messed with my numeric count, but find a way to do that later in simpler, codified way
+#Now we want to draw out the column "Pit", which gives pitch count by game
+PitchCount = JoFer_Log_16$Pit
+#WOULD YOU JUST LOOK AT IT?
+barplot(PitchCount)
+#LOOK AT THAT! WOW!
+#Finally, get the average (what we came to this club for anyways)
+mean(PitchCount)
+#More than 101 pitches on average -- HOLY POOP BATMAN! That's insane.
+#But how insane compared to his compadres that have been starting pitchers recently?
+#Let's pull the data on all pitchers from MIA who have started in the past 10 games and compare their longevities on the mound each game
+Other_MIA_SP <- "C:/Users/Jake Crouse/538Session/Marlins_Pitchers"
+install.packages("qdap")
+require(qdap)
+mcsv_r(dir(Other_MIA_SP))
+#THIS AIN'T WORKING error with rJava loading, so let's do this separately
+#We'll debug this when I see Mark again
+#For now, since there are only four other csv docs to open, let's do them individually
+getwd()
+setwd("~/Marlins_Pitchers")
+#This gives me error "cannot change working directory"
+#Let's make it easy and seperate the files out into the wd as is
+#Now that that's done let's try again
+Chen_Log_16 <- read.csv("Chen_Log_16.csv")
+Conley_Log_16 <- read.csv("Conley_Log_16.csv")
+Koehler_Log_16 <- read.csv("Koehler_Log_16.csv")
+Urena_Log_16 <- read.csv("Urena_Log_16.csv")
+mean(Chen_Log_16$Pit)
+mean(Conley_Log_16$Pit)
+mean(Koehler_Log_16$Pit)
+mean(Urena_Log_16$Pit)
+mean(JoFer_Log_16$Pit)
+#Avg of these is...
+(mean(Chen_Log_16$Pit) + mean(Conley_Log_16$Pit) + mean(Koehler_Log_16$Pit) + mean(Urena_Log_16$Pit)) / 4
+#There must be an easier way, but it's 89.91522 by this
+Chen_Log_16$ER / Chen_Log_16$IP * 9
+mean(Conley_Log_16$IP) 
+mean(Koehler_Log_16$IP)
+mean(Urena_Log_16$IP)
+mean(JoFer_Log_16$IP)
+sum(Chen_Log_16$IP)
+#I put all the key stats together in one csv, so here it is
+Marlins_SP_Stats_16 <- read.csv("Marlins_SP_Stats_16.csv")
+tmp <- Marlins_SP_Stats_16
+tmp$Name = factor(tmp$Name,levels = tmp$Name[order(tmp$ERA)])
+plot(ERA ~ Name,data=tmp,ylab="ERA",xlab="Pitcher")
